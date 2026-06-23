@@ -1,0 +1,24 @@
+# Compiled binaries / objects
+*.exe
+*.o
+*.obj
+*.out
+a.out
+todo
+
+# Build directories
+/build/
+/bin/
+
+# Runtime data (your personal task list)
+tasks.txt
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# OS cruft
+Thumbs.db
+.DS_Store
