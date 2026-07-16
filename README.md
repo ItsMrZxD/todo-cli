@@ -102,5 +102,10 @@ todo-cli/
 │   └── test_main.cpp           # unit tests (#include the program directly)
 ├── .github/workflows/ci.yml    # build + tests on Linux and Windows
 ├── README.md
+├── LICENSE
 └── .gitignore
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
