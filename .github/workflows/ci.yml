@@ -1,0 +1,36 @@
+# Continuous integration: build, run the unit tests, then drive the real
+# binary through a scripted add/list/quit session — on Linux and Windows.
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Build
+        run: g++ -std=c++11 -Wall -Wextra -O2 -o todo main.cpp
+
+      - name: Unit tests
+        run: |
+          g++ -std=c++11 -Wall -Wextra -O2 -o run_tests tests/test_main.cpp
+          ./run_tests
+
+      - name: End-to-end smoke test
+        run: |
+          mkdir e2e
+          cd e2e
+          printf '1\nBuy milk\n\n2\n\n5\n' | ../todo
+          grep -q '0|Buy milk' tasks.txt
+          echo "e2e OK: a task round-tripped through the real binary"

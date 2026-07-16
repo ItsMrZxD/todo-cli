@@ -1,5 +1,7 @@
 # todo-cli
 
+[![CI](https://github.com/ItsMrZxD/todo-cli/actions/workflows/ci.yml/badge.svg)](https://github.com/ItsMrZxD/todo-cli/actions/workflows/ci.yml)
+
 A small, dependency-free command-line to-do list manager written in C++.
 
 It runs entirely in the terminal with a simple numbered menu, and remembers your
@@ -79,11 +81,26 @@ Tasks are stored in `tasks.txt`, one per line, as `doneFlag|description`:
 - The file is created automatically the first time you quit, and `tasks.txt` is
   git-ignored since it's your personal data.
 
+## Tests
+
+```sh
+g++ -std=c++11 -Wall -Wextra -O2 -o run_tests tests/test_main.cpp
+./run_tests
+```
+
+The unit tests cover the input-parsing helpers and the save/load round trip
+(including descriptions containing `|` and malformed lines in the data file).
+On every push, CI builds the app on Linux and Windows, runs the unit tests,
+and drives a scripted add/list/quit session against the real binary.
+
 ## Project structure
 
 ```
 todo-cli/
-├── main.cpp      # the entire program
+├── main.cpp                    # the entire program
+├── tests/
+│   └── test_main.cpp           # unit tests (#include the program directly)
+├── .github/workflows/ci.yml    # build + tests on Linux and Windows
 ├── README.md
 └── .gitignore
 ```

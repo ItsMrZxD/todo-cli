@@ -10,6 +10,10 @@ todo
 /build/
 /bin/
 
+# Test artifacts
+run_tests
+/test_scratch/
+
 # Runtime data (your personal task list)
 tasks.txt
 
