@@ -10,7 +10,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            flags: ""
+          # Static linking on Windows: the runner's PATH mixes several MinGW
+          # toolchains, so a dynamically linked exe can load a mismatched
+          # libstdc++ DLL at runtime and crash.
+          - os: windows-latest
+            flags: "-static"
 
     defaults:
       run:
@@ -19,12 +26,15 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      - name: Toolchain info
+        run: g++ --version
+
       - name: Build
-        run: g++ -std=c++11 -Wall -Wextra -O2 -o todo main.cpp
+        run: g++ -std=c++11 -Wall -Wextra -O2 ${{ matrix.flags }} -o todo main.cpp
 
       - name: Unit tests
         run: |
-          g++ -std=c++11 -Wall -Wextra -O2 -o run_tests tests/test_main.cpp
+          g++ -std=c++11 -Wall -Wextra -O2 ${{ matrix.flags }} -o run_tests tests/test_main.cpp
           ./run_tests
 
       - name: End-to-end smoke test

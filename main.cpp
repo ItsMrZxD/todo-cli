@@ -57,7 +57,8 @@ static bool parseInt(const std::string& s, int& out) {
 }
 
 // Pause so the user can read the result before the menu redraws.
-static void pause() {
+// (Not named "pause" because POSIX <unistd.h> already declares pause().)
+static void waitForEnter() {
     std::cout << "\n  (press Enter to continue) ";
     std::string discard;
     std::getline(std::cin, discard);
@@ -236,19 +237,19 @@ int main() {
         int choice;
         if (!parseInt(choiceLine, choice)) {
             std::cout << "\n  ! Please enter a number from 1 to 5.\n";
-            pause();
+            waitForEnter();
             continue;
         }
 
         switch (choice) {
-            case 1: addTask(tasks);     pause(); break;
-            case 2: listTasks(tasks);   pause(); break;
-            case 3: markComplete(tasks); pause(); break;
-            case 4: deleteTask(tasks);  pause(); break;
+            case 1: addTask(tasks);     waitForEnter(); break;
+            case 2: listTasks(tasks);   waitForEnter(); break;
+            case 3: markComplete(tasks); waitForEnter(); break;
+            case 4: deleteTask(tasks);  waitForEnter(); break;
             case 5: running = false;    break;
             default:
                 std::cout << "\n  ! Please choose a number from 1 to 5.\n";
-                pause();
+                waitForEnter();
         }
     }
 
